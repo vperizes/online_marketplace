@@ -1,4 +1,6 @@
 from django.urls import path
 from . import views
 
-path("<int:primary_Key>", views.detail, name="detail")
+# add app name to refer to in index.html href
+app_name = "item"
+urlpatterns = [path("<int:pk>", views.detail, name="detail")]
