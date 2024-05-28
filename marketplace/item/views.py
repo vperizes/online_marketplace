@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Item
 from .forms import NewItemForm
@@ -17,7 +17,21 @@ def detail(request, pk):
 # requires that user is logged in to add a new item. If auth fails then user is redirected to login page
 @login_required
 def newItem(request):
-    form = NewItemForm()
+    if request.method == "POST":
+        form = NewItemForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            # create obj but does not save to db
+            item = form.save(commit=False)
+            # need to add created_by field and then save to db
+            item.created_by = request.user
+            item.save()
+
+            return redirect("item:detail", pk=item.id)
+
+    # if request is get then just show form
+    else:
+        form = NewItemForm()
     return render(
         request, "item/newitemform.html", {"form": form, "title": "Add New Item"}
     )
