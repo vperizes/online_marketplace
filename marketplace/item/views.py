@@ -5,7 +5,7 @@ from .forms import NewItemForm, EditItemForm
 
 
 def browse(request):
-    items = Item.objects.all()
+    items = Item.objects.filter(is_sold=False)
     return render(request, "item/browse.html", {"items": items})
 
 
