@@ -4,6 +4,11 @@ from .models import Item
 from .forms import NewItemForm, EditItemForm
 
 
+def browse(request):
+    items = Item.objects.all()
+    return render(request, "item/browse.html", {"items": items})
+
+
 def detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
     related_items = Item.objects.filter(category=item.category, is_sold=False).exclude(
