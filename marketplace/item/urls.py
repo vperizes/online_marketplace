@@ -6,4 +6,5 @@ app_name = "item"
 urlpatterns = [
     path("new/", views.newItem, name="newItem"),
     path("<int:pk>", views.detail, name="detail"),
+    path("<int:pk>/delete/", views.deleteItem, name="deleteItem"),
 ]
