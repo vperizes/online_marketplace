@@ -16,4 +16,5 @@ urlpatterns = [
         ),
         name="login",
     ),
+    path("logout/", views.logout_user, name="logout"),
 ]
