@@ -5,8 +5,12 @@ from .forms import NewItemForm, EditItemForm
 
 
 def browse(request):
+    query = request.GET.get("query", "")
     items = Item.objects.filter(is_sold=False)
-    return render(request, "item/browse.html", {"items": items})
+
+    if query:
+        items = items.filter(name__icontains=query)
+    return render(request, "item/browse.html", {"items": items, "query": query})
 
 
 def detail(request, pk):
