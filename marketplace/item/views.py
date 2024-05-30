@@ -11,6 +11,9 @@ def browse(request):
     items = Item.objects.filter(is_sold=False)
     categories = Category.objects.all()
 
+    if category_id:
+        items = items.filter(category_id=category_id)
+
     # Q object provides control over 'where' clause in db query
     if query:
         items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
