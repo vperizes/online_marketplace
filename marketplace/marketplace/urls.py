@@ -26,4 +26,5 @@ urlpatterns = [
     path("", include("core.urls")),
     path("dashboard/", include("dashboard.urls")),
     path("items/", include("item.urls")),
+    path("inbox/", include("messaging.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
