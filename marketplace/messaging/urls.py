@@ -4,5 +4,5 @@ from . import views
 app_name = "messaging"
 
 urlpatterns = [
-    path("new_message/<int:item_pk>", views.new_conversation, name="new_msg")
+    path("new_message/<int:item_pk>/", views.new_conversation, name="new_message")
 ]
