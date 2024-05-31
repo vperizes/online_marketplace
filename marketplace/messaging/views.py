@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from item.models import Item
 from .models import Messages
 from .forms import MessageForm
 
 
+@login_required
 def new_conversation(request, item_pk):
     item = get_object_or_404(Item, pk=item_pk)
 
@@ -11,6 +13,7 @@ def new_conversation(request, item_pk):
     if item.created_by == request.user:
         return redirect("dashboard:index")
 
+    # using "realted name" (messages) on FK from Messages model
     messages = Messages.objects.filter(item=item).filter(members__in=[request.user.id])
 
     # if a convo exists then redirect to that convo
@@ -50,3 +53,10 @@ def new_conversation(request, item_pk):
             "form": form,
         },
     )
+
+
+@login_required
+def inbox(request):
+    messages = Messages.objects.filter(members__in=[request.user.id])
+
+    return render(request, "messaging/inbox.html", {"messages": messages})
