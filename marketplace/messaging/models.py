@@ -14,7 +14,7 @@ class Messages(models.Model):
 
 
 class Message(models.Model):
-    messages = models.ForeignKey(
+    message = models.ForeignKey(
         Messages, related_name="conversation", on_delete=models.CASCADE
     )
     msg_body = models.TextField()
