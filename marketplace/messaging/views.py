@@ -18,7 +18,7 @@ def new_conversation(request, item_pk):
 
     # if a convo exists then redirect to that convo
     if messages:
-        pass  # redirect to conversation
+        return redirect("messaging:inbox_detail", pk=messages.first().id)
 
     # check if message form has been submited
     if request.method == "POST":
@@ -64,9 +64,24 @@ def inbox(request):
 
 @login_required
 def inbox_detail(request, msgs_pk):
-    messages = Messages.objects.filter(members__in=[request.user.id]).get(pk=msgs_pk)
-    form = MessageForm()
+    message = Messages.objects.filter(members__in=[request.user.id]).get(pk=msgs_pk)
+
+    if request.method == "POST":
+        form = MessageForm(request.POST)
+
+        if form.is_valid():
+            conversation_msg = form.save(commit=False)
+            conversation_msg.message = message
+            conversation_msg.created_by = request.user
+            conversation_msg.save()
+
+            message.save()
+
+            return redirect("messaging:inbox_detail", pk=msgs_pk)
+
+    else:
+        form = MessageForm()
 
     return render(
-        request, "messaging/inbox_detail.html", {"messages": messages, "form": form}
+        request, "messaging/inbox_detail.html", {"messages": message, "form": form}
     )
