@@ -7,7 +7,7 @@
 
 <div class="space-y-6">
     {% for message in messages %}
-        <a href="#">
+        <a href="{% url "messaging:inbox_detail" message.id %}">
             <div class="p-6 flex bg-gray-100 rounded-xl">
                 <div class="pr-6">
                     <img src="{{message.item.image.url}}" alt="product image" class="w-20 rounded-xl">

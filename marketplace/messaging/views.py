@@ -60,3 +60,13 @@ def inbox(request):
     messages = Messages.objects.filter(members__in=[request.user.id])
 
     return render(request, "messaging/inbox.html", {"messages": messages})
+
+
+@login_required
+def inbox_detail(request, msgs_pk):
+    messages = Messages.objects.filter(members__in=[request.user.id]).get(pk=msgs_pk)
+    form = MessageForm()
+
+    return render(
+        request, "messaging/inbox_detail.html", {"messages": messages, "form": form}
+    )
